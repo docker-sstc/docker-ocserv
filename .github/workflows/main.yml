@@ -1,0 +1,31 @@
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: docker/setup-qemu-action@v2
+    - uses: docker/setup-buildx-action@v2
+    - uses: docker/login-action@v1 
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - uses: docker/build-push-action@v4
+      with:
+        push: true
+        platforms: linux/amd64,linux/arm64
+        file: ./Dockerfile
+        tags: sstc/ocserv:latest
+    - uses: actions/checkout@v2
+    - uses: christian-korneck/update-container-description-action@v1
+      env:
+        DOCKER_USER: ${{ secrets.DOCKERHUB_USERNAME }}
+        DOCKER_PASS: ${{ secrets.DOCKERHUB_PASSWORD }}
+      with:
+        destination_container_repo: sstc/ocserv
+        short_description: https://github.com/${{ github.repository }}
+    - uses: up9cloud/action-notify@master
+      if: cancelled() == false
+      env:
+        GITHUB_JOB_STATUS: ${{ job.status }}
+        TELEGRAM_BOT_TOKEN: ${{secrets.TELEGRAM_BOT_TOKEN}}
+        TELEGRAM_CHAT_ID: ${{secrets.TELEGRAM_CHAT_ID}}
