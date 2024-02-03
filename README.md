@@ -60,7 +60,7 @@ docker run -d \
     -p 443:443 \
     -p 443:443/udp \
     -v /my/custom/config:/tmp/ocserv \
-    -e CONF_DIR=/tmp/ocserv \
+    -e CONF_FILE=/tmp/ocserv/ocserv.conf \
     sstc/ocserv ocserv -c /tmp/ocserv/ocserv.conf -f
 ```
 

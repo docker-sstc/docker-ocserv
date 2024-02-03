@@ -3,7 +3,9 @@
 if [ -z "$CONF_DIR" ]; then
     CONF_DIR=/etc/ocserv
 fi
-CONF_FILE=$CONF_DIR/ocserv.conf
+if [ -z "$CONF_FILE" ]; then
+    CONF_FILE=$CONF_DIR/ocserv.conf
+fi
 
 if [ ! -f "$CONF_FILE" ]; then
     >&2 echo "$CONF_FILE" not found, skipping.
