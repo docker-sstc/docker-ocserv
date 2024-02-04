@@ -58,15 +58,19 @@ qrencode -t ANSIUTF8 "$uri"
 oathtool --totp --verbose -w 5 $hex_secret
 ```
 
-If you want to setup everything manually, you can generate all the necessary files and mount them, e.q.
+If you want to setup everything manually, you can:
 
 ```bash
+docker run -d --name ocserv
+docker cp ocserv:/etc/ocserv /tmp/ocserv
+docker rm -f ocserv
+# edit files in /tmp/ocserv, then
 docker run -d \
     --privileged \
     --name ocserv \
     -p 443:443 \
     -p 443:443/udp \
-    -v /my/custom/config:/tmp/ocserv \
+    -v /tmp/ocserv:/tmp/ocserv \
     -e CONF_FILE=/tmp/ocserv/ocserv.conf \
     sstc/ocserv ocserv -c /tmp/ocserv/ocserv.conf -f
 ```
