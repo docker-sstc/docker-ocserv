@@ -18,7 +18,7 @@ docker logs -f ocserv
 ```
 
 ```bash
-# Customize username and password
+# Customize username, password and verbose details
 docker run -d \
     --name ocserv \
     --privileged \
@@ -26,10 +26,16 @@ docker run -d \
     -p 443:443/udp \
     -e USERNAME=sstc \
     -e PASSWORD=123456 \
+    -e VERBOSE=true \
     sstc/ocserv
 ```
 
+## Advanced usage
+
+Add more users
+
 ```bash
+# Get into container
 docker exec -it ocserv /bin/sh
 
 # Add new user
@@ -77,6 +83,7 @@ docker run --rm -it -v ./entrypoint.sh:/entrypoint.sh -v ./src:/etc/ocserv --ent
 docker exec ocserv oathtool --verbose --totp -w 5 "<hex secret>"
 ```
 
-## Credits
+## Refs
 
 - `https://github.com/TommyLau/docker-ocserv`
+- `https://github.com/iw4p/OpenConnect-Cisco-AnyConnect-VPN-Server-OneKey-ocserv`
